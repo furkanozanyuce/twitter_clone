@@ -4,6 +4,6 @@ import com.foy.twitter.entity.User;
 
 public interface AuthService {
 
-    User register(String email, String password);
+    User register(String email, String userName, String password);
 
 }

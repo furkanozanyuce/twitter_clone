@@ -1,6 +1,7 @@
 package com.foy.twitter.service;
 
 import com.foy.twitter.entity.Tweet;
+import com.foy.twitter.entity.User;
 import com.foy.twitter.exceptions.TwitterException;
 import com.foy.twitter.repository.TweetRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,12 +47,14 @@ public class TweetServiceImpl implements TweetService{
     }
 
     @Override
-    public Tweet replaceOrCreate(Long id, Tweet tweet) {
+    public Tweet replaceOrCreate(Long id, Tweet tweet, User authenticatedUser) {
         Optional<Tweet> optionalTweet = tweetRepository.findById(id);
         if (optionalTweet.isPresent()) {
-            tweet.setId(id);
-            return tweetRepository.save(tweet);
+            Tweet existingTweet = optionalTweet.get();
+            existingTweet.setSentence(tweet.getSentence());
+            return tweetRepository.save(existingTweet);
         }
+        tweet.setUser(authenticatedUser);
         return tweetRepository.save(tweet);
     }
 

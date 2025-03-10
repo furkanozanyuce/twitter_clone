@@ -31,6 +31,8 @@ public class User implements UserDetails {
     @Column(name = "email")
     private String email;
 
+    @NotNull
+    @NotBlank
     @Column(name = "user_name")
     private String userName;
 
@@ -138,6 +140,10 @@ public class User implements UserDetails {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public void setAuthorities(Set<Role> authorities) {

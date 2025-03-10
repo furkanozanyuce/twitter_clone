@@ -3,11 +3,13 @@ package com.foy.twitter.controller;
 import com.foy.twitter.dto.TweetRequest;
 import com.foy.twitter.dto.TweetResponse;
 import com.foy.twitter.entity.Tweet;
+import com.foy.twitter.entity.User;
 import com.foy.twitter.service.TweetService;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,9 +40,10 @@ public class TweetController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public TweetResponse save(@Validated @RequestBody TweetRequest tweetRequest) {
+    public TweetResponse save(@Validated @RequestBody TweetRequest tweetRequest, @AuthenticationPrincipal User user) {
         Tweet tweet = new Tweet();
         tweet.setSentence(tweetRequest.getSentence());
+        tweet.setUser(user);
 
         tweetService.save(tweet);
 
@@ -48,12 +51,12 @@ public class TweetController {
     }
 
     @PutMapping("/{tweetId}")
-    public TweetResponse replaceOrCreate(@PathVariable("tweetId") Long id,@Validated @RequestBody TweetRequest tweetRequest) {
+    public TweetResponse replaceOrCreate(@PathVariable("tweetId") Long id,@Validated @RequestBody TweetRequest tweetRequest, @AuthenticationPrincipal User authenticatedUser) {
         Tweet tweet = new Tweet();
         tweet.setSentence(tweetRequest.getSentence());
 
-        tweetService.replaceOrCreate(id, tweet);
-        return new TweetResponse(tweet.getSentence(), tweet.getUser().getId());
+        Tweet savedTweet = tweetService.replaceOrCreate(id, tweet, authenticatedUser);
+        return new TweetResponse(savedTweet.getSentence(), savedTweet.getUser().getId());
     }
 
     @PatchMapping("/{tweetId}")
@@ -63,8 +66,8 @@ public class TweetController {
             tweet.setSentence(tweetRequest.getSentence());
         }
 
-        tweetService.update(id, tweet);
-        return new TweetResponse(tweet.getSentence(), tweet.getUser().getId());
+        Tweet updatedTweet = tweetService.update(id, tweet);
+        return new TweetResponse(updatedTweet.getSentence(), updatedTweet.getUser().getId());
     }
 
     @DeleteMapping("/{tweetId}")

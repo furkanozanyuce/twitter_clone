@@ -28,7 +28,7 @@ public class AuthServiceImpl implements AuthService{
     }
 
     @Override
-    public User register(String email, String password) {
+    public User register(String email, String userName, String password) {
 
         Optional<User> optionalUser = userRepository.findByEmail(email);
 
@@ -50,6 +50,7 @@ public class AuthServiceImpl implements AuthService{
 
         User user = new User();
         user.setEmail(email);
+        user.setUserName(userName);
         user.setPassword(encodedPassword);
         user.setAuthorities(Set.of(userRole.get()));
 
