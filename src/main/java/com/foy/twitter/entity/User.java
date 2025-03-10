@@ -6,16 +6,20 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
 @Entity
+@Data
 @Table(name = "user", schema = "twitter")
-public class User {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,8 +31,6 @@ public class User {
     @Column(name = "email")
     private String email;
 
-    @NotNull
-    @NotBlank
     @Column(name = "user_name")
     private String userName;
 
@@ -89,13 +91,96 @@ public class User {
         }
         tweets.add(tweet);
     }
+//
+//    public void addComment(Comment comment) {
+//        if (comments == null) {
+//            comments = new HashSet<>();
+//        }
+//        comments.add(comment);
+//    }
 
-    public void addComment(Comment comment) {
-        if (comments == null) {
-            comments = new HashSet<>();
-        }
-        comments.add(comment);
+
+    public Long getId() {
+        return id;
     }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public Set<Tweet> getTweets() {
+        return tweets;
+    }
+
+    public Set<Comment> getComments() {
+        return comments;
+    }
+
+    public Set<Like> getLikes() {
+        return likes;
+    }
+
+    public Set<Retweet> getRetweets() {
+        return retweets;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setAuthorities(Set<Role> authorities) {
+        this.roles = authorities;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return roles;
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return UserDetails.super.isAccountNonExpired();
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return UserDetails.super.isAccountNonLocked();
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return UserDetails.super.isCredentialsNonExpired();
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return UserDetails.super.isEnabled();
+    }
+
+
+
 
 
 }

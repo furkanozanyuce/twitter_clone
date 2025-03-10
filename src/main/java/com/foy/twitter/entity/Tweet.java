@@ -40,26 +40,73 @@ public class Tweet {
     @OneToMany(mappedBy = "tweet", cascade = CascadeType.ALL)
     private Set<Comment> comments;
 
-
-    public void addRetweet(Retweet retweet) {
-        if (retweets == null) {
-            retweets = new HashSet<>();
-        }
-        retweets.add(retweet);
+    public Long getId() {
+        return id;
     }
 
-    public void addLike(Like like) {
-        if (likes == null) {
-            likes = new HashSet<>();
-        }
-        likes.add(like);
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public void addComment(Comment comment) {
-        if (comments == null) {
-            comments = new HashSet<>();
-        }
-        comments.add(comment);
+    public String getSentence() {
+        return sentence;
     }
+
+    public void setSentence(String sentence) {
+        this.sentence = sentence;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Set<Retweet> getRetweets() {
+        return retweets;
+    }
+
+    public void setRetweets(Set<Retweet> retweets) {
+        this.retweets = retweets;
+    }
+
+    public Set<Like> getLikes() {
+        return likes;
+    }
+
+    public void setLikes(Set<Like> likes) {
+        this.likes = likes;
+    }
+
+    public Set<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(Set<Comment> comments) {
+        this.comments = comments;
+    }
+
+    //    public void addRetweet(Retweet retweet) {
+//        if (retweets == null) {
+//            retweets = new HashSet<>();
+//        }
+//        retweets.add(retweet);
+//    }
+//
+//    public void addLike(Like like) {
+//        if (likes == null) {
+//            likes = new HashSet<>();
+//        }
+//        likes.add(like);
+//    }
+//
+//    public void addComment(Comment comment) {
+//        if (comments == null) {
+//            comments = new HashSet<>();
+//        }
+//        comments.add(comment);
+//    }
 
 }
