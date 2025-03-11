@@ -6,8 +6,6 @@ import com.foy.twitter.entity.Tweet;
 import com.foy.twitter.entity.User;
 import com.foy.twitter.exceptions.TwitterException;
 import com.foy.twitter.service.TweetService;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -30,19 +28,19 @@ public class TweetController {
 
     @GetMapping
     public List<TweetResponse> getAll() {
-        return tweetService.getAll().stream().map(tweet -> new TweetResponse(tweet.getSentence(), tweet.getUser().getId())).toList();
+        return tweetService.getAll().stream().map(tweet -> new TweetResponse(tweet.getSentence(), tweet.getUser().getId(), tweet.getUser().getUserName(), tweet.getCreatedAt())).toList();
     }
 
     @GetMapping("/findByUserId")
     public List<TweetResponse> getByUserId(@RequestParam Long userId) {
         List<Tweet> tweets = tweetService.getByUserId(userId);
-        return tweets.stream().map(tweet -> new TweetResponse(tweet.getSentence(), tweet.getUser().getId())).toList();
+        return tweets.stream().map(tweet -> new TweetResponse(tweet.getSentence(), tweet.getUser().getId(), tweet.getUser().getUserName(), tweet.getCreatedAt())).toList();
     }
 
     @GetMapping("/findById")
     public TweetResponse getById(@RequestParam Long tweetId) {
         Tweet tweet = tweetService.getById(tweetId);
-        return new TweetResponse(tweet.getSentence(), tweet.getUser().getId());
+        return new TweetResponse(tweet.getSentence(), tweet.getUser().getId(), tweet.getUser().getUserName(), tweet.getCreatedAt());
     }
 
     @PostMapping
@@ -54,7 +52,7 @@ public class TweetController {
 
         tweetService.save(tweet);
 
-        return new TweetResponse(tweet.getSentence(), tweet.getUser().getId());
+        return new TweetResponse(tweet.getSentence(), tweet.getUser().getId(), tweet.getUser().getUserName(), tweet.getCreatedAt());
     }
 
     @PutMapping("/{tweetId}")
@@ -63,7 +61,7 @@ public class TweetController {
         tweet.setSentence(tweetRequest.getSentence());
 
         Tweet savedTweet = tweetService.replaceOrCreate(id, tweet, authenticatedUser);
-        return new TweetResponse(savedTweet.getSentence(), savedTweet.getUser().getId());
+        return new TweetResponse(savedTweet.getSentence(), savedTweet.getUser().getId(), tweet.getUser().getUserName(), tweet.getCreatedAt());
     }
 
     @PatchMapping("/{tweetId}")
@@ -74,7 +72,7 @@ public class TweetController {
         }
 
         Tweet updatedTweet = tweetService.update(id, tweet);
-        return new TweetResponse(updatedTweet.getSentence(), updatedTweet.getUser().getId());
+        return new TweetResponse(updatedTweet.getSentence(), updatedTweet.getUser().getId(), tweet.getUser().getUserName(), tweet.getCreatedAt());
     }
 
     @DeleteMapping("/{tweetId}")

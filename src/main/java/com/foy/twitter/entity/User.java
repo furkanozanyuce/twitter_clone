@@ -81,21 +81,6 @@ public class User implements UserDetails {
 
 
 
-    public void addTweet(Tweet tweet) {
-        if (tweets == null) {
-            tweets = new HashSet<>();
-        }
-        tweets.add(tweet);
-    }
-//
-//    public void addComment(Comment comment) {
-//        if (comments == null) {
-//            comments = new HashSet<>();
-//        }
-//        comments.add(comment);
-//    }
-
-
     public Long getId() {
         return id;
     }

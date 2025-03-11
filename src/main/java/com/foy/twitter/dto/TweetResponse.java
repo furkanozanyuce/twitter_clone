@@ -1,4 +1,6 @@
 package com.foy.twitter.dto;
 
-public record TweetResponse(String sentence, Long userId) {
+import java.time.LocalDateTime;
+
+public record TweetResponse(String sentence, Long userId, String userName, LocalDateTime createdAt) {
 }
