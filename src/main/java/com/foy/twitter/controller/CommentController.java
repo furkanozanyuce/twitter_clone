@@ -34,14 +34,14 @@ public class CommentController {
         comment.setUser(user);
 
         Comment savedComment = commentService.save(comment);
-        return new CommentResponse(savedComment.getTweet().getId(), savedComment.getSentence());
+        return new CommentResponse(savedComment.getTweet().getId(), savedComment.getUser().getId(), savedComment.getSentence());
     }
 
     @PutMapping("/{commentId}")
     public CommentResponse update(@PathVariable("commentId") Long commentId, @Validated @RequestBody CommentRequest commentRequest,
                                          @AuthenticationPrincipal User user) {
         Comment updatedComment = commentService.update(commentId, commentRequest.getSentence(), user);
-        return new CommentResponse(updatedComment.getTweet().getId(), updatedComment.getSentence());
+        return new CommentResponse(updatedComment.getTweet().getId(), updatedComment.getUser().getId(), updatedComment.getSentence());
     }
 
     @DeleteMapping("/{commentId}")
