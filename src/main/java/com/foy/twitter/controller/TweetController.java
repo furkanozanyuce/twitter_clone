@@ -4,6 +4,7 @@ import com.foy.twitter.dto.TweetRequest;
 import com.foy.twitter.dto.TweetResponse;
 import com.foy.twitter.entity.Tweet;
 import com.foy.twitter.entity.User;
+import com.foy.twitter.exceptions.TwitterException;
 import com.foy.twitter.service.TweetService;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -32,9 +33,15 @@ public class TweetController {
         return tweetService.getAll().stream().map(tweet -> new TweetResponse(tweet.getSentence(), tweet.getUser().getId())).toList();
     }
 
-    @GetMapping("/{tweetId}")
-    public TweetResponse getById(@PathVariable("tweetId") Long id) {
-        Tweet tweet = tweetService.getById(id);
+    @GetMapping("/findByUserId")
+    public List<TweetResponse> getByUserId(@RequestParam Long userId) {
+        List<Tweet> tweets = tweetService.getByUserId(userId);
+        return tweets.stream().map(tweet -> new TweetResponse(tweet.getSentence(), tweet.getUser().getId())).toList();
+    }
+
+    @GetMapping("/findById")
+    public TweetResponse getById(@RequestParam Long tweetId) {
+        Tweet tweet = tweetService.getById(tweetId);
         return new TweetResponse(tweet.getSentence(), tweet.getUser().getId());
     }
 
@@ -72,7 +79,11 @@ public class TweetController {
 
     @DeleteMapping("/{tweetId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteById(@PathVariable("tweetId") Long id) {
+    public void deleteById(@PathVariable("tweetId") Long id, @AuthenticationPrincipal User authenticatedUser) {
+        Tweet tweet = tweetService.getById(id);
+        if (!tweet.getUser().getId().equals(authenticatedUser.getId())) {
+            throw new TwitterException("You are not authorized to delete this tweet", HttpStatus.FORBIDDEN);
+        }
         tweetService.deleteById(id);
     }
 

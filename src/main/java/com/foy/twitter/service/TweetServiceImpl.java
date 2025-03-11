@@ -28,6 +28,11 @@ public class TweetServiceImpl implements TweetService{
     }
 
     @Override
+    public List<Tweet> getByUserId(Long userId) {
+        return tweetRepository.findByUserId(userId);
+    }
+
+    @Override
     public Tweet getById(Long id) {
         return tweetRepository.findById(id).orElseThrow(() -> new TwitterException("Tweet not found", HttpStatus.NOT_FOUND));
     }
@@ -51,6 +56,11 @@ public class TweetServiceImpl implements TweetService{
         Optional<Tweet> optionalTweet = tweetRepository.findById(id);
         if (optionalTweet.isPresent()) {
             Tweet existingTweet = optionalTweet.get();
+
+            if (!existingTweet.getUser().getId().equals(authenticatedUser.getId())) {
+                throw new TwitterException("You are not authorized to update this tweet", HttpStatus.FORBIDDEN);
+            }
+
             existingTweet.setSentence(tweet.getSentence());
             return tweetRepository.save(existingTweet);
         }

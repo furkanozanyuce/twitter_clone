@@ -47,30 +47,23 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<Comment> comments;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "user_like",
-            schema = "twitter",
-            joinColumns = {
-                    @JoinColumn(name = "user_id")
-            },
-            inverseJoinColumns = {
-                    @JoinColumn(name = "like_id")
-            }
-    )
+//    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+//    @JoinTable(
+//            name = "user_like",
+//            schema = "twitter",
+//            joinColumns = {
+//                    @JoinColumn(name = "user_id")
+//            },
+//            inverseJoinColumns = {
+//                    @JoinColumn(name = "like_id")
+//            }
+//    )
+//    private Set<Like> likes;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<Like> likes;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "user_retweet",
-            schema = "twitter",
-            joinColumns = {
-                    @JoinColumn(name = "user_id")
-            },
-            inverseJoinColumns = {
-                    @JoinColumn(name = "retweet_id")
-            }
-    )
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<Retweet> retweets;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
@@ -85,6 +78,7 @@ public class User implements UserDetails {
             }
     )
     private Set<Role> roles;
+
 
 
     public void addTweet(Tweet tweet) {

@@ -10,8 +10,6 @@ import lombok.NoArgsConstructor;
 import java.util.HashSet;
 import java.util.Set;
 
-@AllArgsConstructor
-@NoArgsConstructor
 @Data
 @Entity
 @Table(name = "tweet", schema = "twitter")
@@ -40,6 +38,18 @@ public class Tweet {
     @OneToMany(mappedBy = "tweet", cascade = CascadeType.ALL)
     private Set<Comment> comments;
 
+    public Tweet() {
+    }
+
+    public Tweet(Long id, String sentence, User user, Set<Retweet> retweets, Set<Like> likes, Set<Comment> comments) {
+        this.id = id;
+        this.sentence = sentence;
+        this.user = user;
+        this.retweets = retweets;
+        this.likes = likes;
+        this.comments = comments;
+    }
+
     public Long getId() {
         return id;
     }
@@ -64,6 +74,8 @@ public class Tweet {
         this.user = user;
     }
 
+
+
     public Set<Retweet> getRetweets() {
         return retweets;
     }
@@ -83,6 +95,7 @@ public class Tweet {
     public Set<Comment> getComments() {
         return comments;
     }
+
 
     public void setComments(Set<Comment> comments) {
         this.comments = comments;

@@ -29,4 +29,47 @@ public class Retweet {
     @JoinColumn(name = "tweet_id")
     private Tweet tweet;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Boolean getIsRetweeted() {
+        return isRetweeted;
+    }
+
+    public void setIsRetweeted(Boolean retweeted) {
+        isRetweeted = retweeted;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public Tweet getTweet() {
+        return tweet;
+    }
+
+    public void setTweet(Tweet tweet) {
+        this.tweet = tweet;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 }

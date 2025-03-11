@@ -9,6 +9,8 @@ public interface TweetService {
 
     List<Tweet> getAll();
 
+    List<Tweet> getByUserId(Long userId);
+
     Tweet getById(Long id);
 
     Tweet save(Tweet tweet);
