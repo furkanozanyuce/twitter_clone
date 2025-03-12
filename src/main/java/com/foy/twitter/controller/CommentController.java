@@ -12,6 +12,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/comment")
 public class CommentController {
@@ -48,5 +50,14 @@ public class CommentController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteComment(@PathVariable("commentId") Long commentId, @AuthenticationPrincipal User user) {
         commentService.delete(commentId, user);
+    }
+
+    @GetMapping("/byTweet")
+    public List<CommentResponse> getCommentsByTweet(@RequestParam Long tweetId) {
+        return commentService
+                .findByTweetId(tweetId)
+                .stream()
+                .map(comment -> new CommentResponse(comment.getTweet().getId(), comment.getUser().getId(), comment.getSentence()))
+                .toList();
     }
 }

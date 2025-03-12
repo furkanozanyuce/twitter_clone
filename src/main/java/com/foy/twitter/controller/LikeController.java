@@ -23,12 +23,12 @@ public class LikeController {
     @PostMapping("/like")
     public LikeResponse likeTweet(@RequestParam Long tweetId, @AuthenticationPrincipal User user) {
         Like like = likeService.likeTweet(tweetId, user);
-        return new LikeResponse(like.getId(), like.getIsLiked());
+        return new LikeResponse(like.getId(), like.getTweet().getId(), like.getIsLiked());
     }
 
     @PostMapping("/dislike")
     public LikeResponse dislikeTweet(@RequestParam Long tweetId, @AuthenticationPrincipal User user) {
         likeService.dislikeTweet(tweetId, user);
-        return new LikeResponse(tweetId, false);
+        return new LikeResponse(tweetId, tweetId, false);
     }
 }

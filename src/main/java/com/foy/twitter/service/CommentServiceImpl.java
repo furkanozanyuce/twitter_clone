@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class CommentServiceImpl implements CommentService{
 
@@ -52,5 +54,10 @@ public class CommentServiceImpl implements CommentService{
             throw new TwitterException("You are not authorized to delete this comment", HttpStatus.FORBIDDEN);
         }
         commentRepository.delete(comment);
+    }
+
+    @Override
+    public List<Comment> findByTweetId(Long tweetId) {
+        return commentRepository.findByTweet_Id(tweetId);
     }
 }
