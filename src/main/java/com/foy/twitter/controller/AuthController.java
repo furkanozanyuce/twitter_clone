@@ -42,6 +42,8 @@ public class AuthController {
         );
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        return new LoginResponse(request.getEmail(), "Login successful!");
+        User user = (User) authentication.getPrincipal();
+
+        return new LoginResponse(user.getId(), user.getEmail(), user.getUserName(), "Login successful!");
     }
 }

@@ -1,4 +1,4 @@
 package com.foy.twitter.dto;
 
-public record LoginResponse(String email, String message) {
+public record LoginResponse(Long userId, String email, String userName, String message) {
 }
