@@ -125,6 +125,30 @@ public class User implements UserDetails {
         this.userName = userName;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setTweets(Set<Tweet> tweets) {
+        this.tweets = tweets;
+    }
+
+    public void setComments(Set<Comment> comments) {
+        this.comments = comments;
+    }
+
+    public void setLikes(Set<Like> likes) {
+        this.likes = likes;
+    }
+
+    public void setRetweets(Set<Retweet> retweets) {
+        this.retweets = retweets;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
+
     public void setAuthorities(Set<Role> authorities) {
         this.roles = authorities;
     }

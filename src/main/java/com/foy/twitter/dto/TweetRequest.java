@@ -7,10 +7,16 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@AllArgsConstructor
-@NoArgsConstructor
+
 @Data
 public class TweetRequest {
+
+    public TweetRequest() {
+    }
+
+    public TweetRequest(String sentence) {
+        this.sentence = sentence;
+    }
 
     @NotNull
     @NotBlank
